@@ -1,5 +1,7 @@
 package dynamicconnectivity
 
+import "it.giuseppecarlone.algorithms.go/internal/helpers/unique"
+
 type components []int
 
 // set id of each object to itself (N array accesses)
@@ -24,4 +26,8 @@ func (id components) union(p, q int) {
 // check whether p and q are in the same component (2 array accesses)
 func (c components) connected(p, q int) bool {
 	return c[p] == c[q]
+}
+
+func (c components) countConnectedComponents() int {
+	return len(unique.Ints(c))
 }

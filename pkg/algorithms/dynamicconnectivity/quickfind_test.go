@@ -47,4 +47,9 @@ func TestUnion(t *testing.T) {
 
 		fmt.Println(components)
 	}
+
+	connectedComponents := components.countConnectedComponents()
+	if connectedComponents != 2 {
+		t.Errorf("Expected %v connected compoenents but got %v", 2, connectedComponents)
+	}
 }
