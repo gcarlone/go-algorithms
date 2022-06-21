@@ -5,7 +5,8 @@ type components struct {
 	sizes   []int
 }
 
-// set id of each object to itself (N array accesses)
+// set parent id of each object to itself (N array accesses)
+// set initial tree size to 1 (the object itself)
 func newComponents(n int) components {
 	c := components{}
 	c.parents = make([]int, n)
@@ -27,7 +28,8 @@ func (c components) getRoot(i int) int {
 	return i
 }
 
-// change root of p to point to root of q (depth of p and q array accesses)
+// change root of the tree with less objects to point to root of
+// tree with the more objects (depth of p and q array accesses)
 func (c components) union(p, q int) {
 	pRoot := c.getRoot(p)
 	qRoot := c.getRoot(q)

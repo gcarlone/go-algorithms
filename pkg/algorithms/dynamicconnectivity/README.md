@@ -4,7 +4,11 @@ Given a set of N objects.
 - **Union command**: connect two objects.
 - **Find/connected query**¢: is there a path connecting the two objects?
 
+<p align="center">
+
 ![Connectivity](.img/connectivity.png)
+
+</p>
 
 We assume "is connected to" is an **equivalence relation**:
 - Reflexive: _p_ is connected to _p_.
@@ -18,7 +22,11 @@ connected.
 <p align="center">{ 0 } { 1 4 5 } { 2 3 6 7 }</p>
 <br>
 
+<p align="center">
+
 ![Union](.img/union.png)
+
+</p>
 
 <br>
 
@@ -53,7 +61,11 @@ Quick-union is also too slow
 
 > **Union** to merge components containing p and q, set the id of p's root to the id of q's root.
 
+<p align="center">
+
 ![Quick Union](.img/quick-union.png)
+
+</p>
 
 > **Cost model** Number of array accesses (for read or write)
 
@@ -77,3 +89,62 @@ _** includes cost of finding roots_<br>
 > **Quick-union defect**
 - Trees can get tall
 - Find too expensive (could be N array accesses)
+
+<br>
+
+# Weighted quick-union.
+- Modify quick-union to avoid tall trees
+- Keep track of size (number of objects) of each tree
+- Balance by linking root of smaller tree to root of larger tree
+
+<br>
+
+> **Data structure** Same as quick-union, but maintain extra array size[i] to count number of objects in the tree rooted at i.
+
+> **Find** Identical to quick-union but takes time proportional to depth of p and q (depth of any node x is at most lg N)
+
+> **Union** Modify quick-union to link root of smaller tree to root of larger tree. Takes constant time, given roots
+
+<br>
+
+<p align="center">
+
+![QU-WQU](.img/qu-wqu.png)
+
+</p>
+
+> **Cost model** Number of array accesses (for read or write)
+<p align="center">
+
+|algorithm|initialize|union|find|
+|---------|:--------:|:---:|:--:|
+|`quick-find`|N|N|1|
+|`quick-union`*|N|N*|N|
+|`weighted quick-union`*|N|ln N*|ln N|
+
+_* includes cost of finding roots_<br>
+</p>
+
+<br>
+
+# Quick union with path compression
+Just after computing the root of p, set the id of each examined node to point to that root.
+
+<br>
+
+# Worst-Case Time
+ 
+<p align="center">
+
+|algorithm|worst-case time|
+|---------|:-------------:|
+|quick-find|M * N|
+|quick-union|M * N|
+|weighted QU|N + M * log N|
+|QU + path compression|N + M * log N|
+|weighted QU + path compression| N + M * lg N|
+
+_M union-find operations on a set of N objects_
+
+</p>
+
