@@ -1,4 +1,4 @@
-package weigthedquickunion
+package pathcompression
 
 import (
 	"fmt"

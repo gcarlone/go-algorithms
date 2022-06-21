@@ -1,4 +1,4 @@
-package weigthedquickunion
+package pathcompression
 
 type components struct {
 	parents []int
@@ -22,6 +22,7 @@ func newComponents(n int) components {
 // chase parent pointers until reach root (depth of i array accesses)
 func (c components) getRoot(i int) int {
 	for c.parents[i] != i {
+		c.parents[i] = c.parents[c.parents[i]]
 		i = c.parents[i]
 	}
 	return i
