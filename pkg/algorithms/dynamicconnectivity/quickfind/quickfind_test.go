@@ -28,28 +28,27 @@ func TestUnion(t *testing.T) {
 		{6, 7, true},
 	}
 
-	components := newComponents(n)
+	qf := newQuickfind(n)
 
-	fmt.Println(components)
+	fmt.Println(qf)
 
 	for _, o := range values {
-		c := components.connected(o.p, o.q)
+		c := qf.connected(o.p, o.q)
 		if c != o.connected {
 			t.Errorf("Expected %v - %v connected was %v before union but got %v", o.p, o.q, o.connected, c)
 		}
 
-		components.union(o.p, o.q)
+		qf.union(o.p, o.q)
 
-		c = components.connected(o.p, o.q)
+		c = qf.connected(o.p, o.q)
 		if c != true {
 			t.Errorf("Expected %v - %v was connected after union but got %v", o.p, o.q, o.connected)
 		}
 
-		fmt.Println(components)
+		fmt.Println(qf)
 	}
 
-	connectedComponents := components.countConnectedComponents()
-	if connectedComponents != 2 {
-		t.Errorf("Expected %v connected compoenents but got %v", 2, connectedComponents)
+	if qf.connectedComponents != 2 {
+		t.Errorf("Expected %v connected compoenents but got %v", 2, qf.connectedComponents)
 	}
 }

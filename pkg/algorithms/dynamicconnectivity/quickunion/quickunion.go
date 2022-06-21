@@ -1,40 +1,40 @@
 package quickunion
 
-type components []int
+type quickunion struct {
+	parent              []int
+	connectedComponents int
+}
 
 // set id of each object to itself (N array accesses)
-func newComponents(n int) components {
-	c := make(components, n)
-	for i := range c {
-		c[i] = i
+func newQuickunion(n int) quickunion {
+	qu := quickunion{parent: make([]int, n), connectedComponents: n}
+	for i := range qu.parent {
+		qu.parent[i] = i
 	}
-	return c
+	return qu
 }
 
 // chase parent pointers until reach root (depth of i array accesses)
-func (c components) getRoot(i int) int {
-	for c[i] != i {
-		i = c[i]
+func (qu quickunion) root(i int) int {
+	for qu.parent[i] != i {
+		i = qu.parent[i]
 	}
 	return i
 }
 
 // change root of p to point to root of q (depth of p and q array accesses)
-func (id components) union(p, q int) {
-	id[id.getRoot(p)] = id.getRoot(q)
+func (qu *quickunion) union(p, q int) {
+	pRoot := qu.root(p)
+	qRoot := qu.root(q)
+
+	if qu.parent[pRoot] != qRoot {
+		qu.connectedComponents--
+
+		qu.parent[pRoot] = qRoot
+	}
 }
 
 // check if p and q have same root (depth of p and q array accesses)
-func (c components) connected(p, q int) bool {
-	return c.getRoot(p) == c.getRoot(q)
-}
-
-func (c components) countConnectedComponents() int {
-	counter := 0
-	for i := 0; i < len(c); i++ {
-		if c[i] == i {
-			counter++
-		}
-	}
-	return counter
+func (qu quickunion) connected(p, q int) bool {
+	return qu.root(p) == qu.root(q)
 }

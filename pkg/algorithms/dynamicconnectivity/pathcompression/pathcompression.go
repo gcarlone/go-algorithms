@@ -1,6 +1,6 @@
-package weigthedquickunion
+package pathcompression
 
-type weigthedQU struct {
+type weigthedPCQU struct {
 	parent              []int
 	size                []int
 	connectedComponents int
@@ -8,20 +8,22 @@ type weigthedQU struct {
 
 // set parent id of each object to itself (N array accesses)
 // set initial tree size to 1 (the object itself)
-func newWeigthedQuickUnion(n int) weigthedQU {
-	c := weigthedQU{parent: make([]int, n), size: make([]int, n), connectedComponents: n}
+func newWeigthedPCQU(n int) weigthedPCQU {
+	qu := weigthedPCQU{parent: make([]int, n), size: make([]int, n), connectedComponents: n}
 
-	for i := range c.parent {
-		c.parent[i] = i
-		c.size[i] = 1
+	for i := range qu.parent {
+		qu.parent[i] = i
+		qu.size[i] = 1
 	}
 
-	return c
+	return qu
 }
 
 // chase parent pointers until reach root (depth of i array accesses)
-func (qu weigthedQU) root(i int) int {
+// each examined node is repointed to the tree root
+func (qu weigthedPCQU) root(i int) int {
 	for qu.parent[i] != i {
+		qu.parent[i] = qu.parent[qu.parent[i]] // path - compression
 		i = qu.parent[i]
 	}
 	return i
@@ -29,7 +31,7 @@ func (qu weigthedQU) root(i int) int {
 
 // change root of the tree with less objects to point to root of
 // tree with the more objects (depth of p and q array accesses)
-func (qu *weigthedQU) union(p, q int) {
+func (qu *weigthedPCQU) union(p, q int) {
 	if pRoot, qRoot := qu.root(p), qu.root(q); pRoot != qRoot {
 		if qu.size[pRoot] < qu.size[qRoot] {
 			qu.parent[pRoot] = qRoot
@@ -43,6 +45,6 @@ func (qu *weigthedQU) union(p, q int) {
 }
 
 // check if p and q have same root (depth of p and q array accesses)
-func (qu weigthedQU) connected(p, q int) bool {
+func (qu weigthedPCQU) connected(p, q int) bool {
 	return qu.root(p) == qu.root(q)
 }
