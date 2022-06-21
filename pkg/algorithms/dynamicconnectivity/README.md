@@ -22,15 +22,58 @@ connected.
 
 <br>
 
-# Quick-find [eager approach] is too slow
+# Quick-Find [eager approach]
 Quick-find is too slow
 
 > **Cost model** Number of array accesses (for read or write)
+
+<p align="center">
 
 |algorithm|initialize|union|find|
 |---------|:--------:|:---:|:--:|
 |`quick-find`|N|N|1|
 
-order of growth of number of array accesses
+</p>
+<p align="center">order of growth of number of array accesses</p>
 
 > **Union** is too expensive It takes N² array accesses to process a sequence of N union commands on N objects.
+
+<br>
+
+# Quick-Union [lazy approach]
+Quick-union is also too slow
+<br>
+
+> Data structure
+- Integer array id[] of length N
+- Interpretation: id[i] is parent of i
+- Root of i is id[id[id[...id[i]...]]]
+
+> **Find** check if p and q have the same root.
+
+> **Union** to merge components containing p and q, set the id of p's root to the id of q's root.
+
+![Quick Union](.img/quick-union.png)
+
+> **Cost model** Number of array accesses (for read or write)
+
+<p align="center">
+
+|algorithm|initialize|union|find|
+|---------|:--------:|:---:|:--:|
+|`quick-find`|N|N|1|
+|`quick-union`*|N|N**|N|
+
+_*  worst case_<br>
+_** includes cost of finding roots_<br>
+</p>
+<br>
+
+***
+
+> **Quick-find defect**
+- Union too expensive (N array accesses)
+- Trees are flat, but too expensive to keep them flat
+> **Quick-union defect**
+- Trees can get tall
+- Find too expensive (could be N array accesses)
